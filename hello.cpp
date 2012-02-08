@@ -25,21 +25,21 @@
 int main(void)
 {
   while(1)
-  {
-  pinMode(LED_PIN,OUTPUT);
-  digitalWrite(LED_PIN,1);
-  _delay_ms(1000);
-  digitalWrite(LED_PIN,0);
-  _delay_ms(1000);
-  pinToggle(LED_PIN);
-  _delay_ms(1000);
-  pinToggle(LED_PIN);
-  _delay_ms(1000);  
-  pinMode(LED_PIN,INPUT);
-  pinPull(LED_PIN,UP);
-  _delay_ms(1000);
-  pinPull(LED_PIN,FLOAT);
-  _delay_ms(1000);
-  }
+    {
+      pinMode(LED_PIN,OUTPUT);
+      digitalWrite(LED_PIN,1);
+      _delay_ms(1000);
+      digitalWrite(LED_PIN,0);
+      _delay_ms(1000);
+      pinToggle(LED_PIN);
+      _delay_ms(1000);
+      pinToggle(LED_PIN);
+      _delay_ms(1000);  
+      pinMode(LED_PIN,INPUT);
+      pinPull(LED_PIN,UP);
+      _delay_ms(1000);
+      pinPull(LED_PIN,FLOAT);
+      _delay_ms(1000);
+    }
   return 0;
 }
