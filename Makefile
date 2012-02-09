@@ -20,6 +20,12 @@ CPU_AVRDUDE := t13
 CPU_GCC     := attiny13a
 F_CPU       := 9600000ULL
 endif
+ifeq ($(CPU),atmega48a)
+CPU_AVRDUDE := m48
+CPU_GCC     := atmega48a
+F_CPU       := 8000000ULL
+endif
+
 
 # FLAGS
 CF      := -c -g -Os -mmcu=$(CPU_GCC) -DF_CPU=$(F_CPU) -I. 
