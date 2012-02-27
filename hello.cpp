@@ -18,9 +18,16 @@
 
 #include "avrez.h"
 
+
 // Hook a LED up to this pin: 5v->1k resistor->LED->pin
-#define LED_PIN pinB0  // B0 is on most chips but you can change this to any pin your chip has
+#ifdef PINOUT_ATmega48
+#define LED_PIN pinB2  // B0 is on most chips but you can change this to any pin your chip has
 #define ANALOG_PIN pinC0  // pinB3
+#endif
+#ifdef PINOUT_ATtiny13
+#define LED_PIN pinB0
+#define ANALOG_PIN pinB3
+#endif
 
 void digitalTest()
 {
@@ -68,7 +75,8 @@ int main(void)
 {
   while(1)
     {
-      analogInputTest();
+      digitalTest();
+      //analogInputTest();
     }
   return 0;
 }

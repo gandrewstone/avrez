@@ -3,7 +3,8 @@ VERSION      := 0.1
 PROGRAM_NAME := hello
 
 # Chip and programmer 
-DEVICE_PROGRAMMER := usbtiny
+#DEVICE_PROGRAMMER := usbtiny
+DEVICE_PROGRAMMER := stk500v1 -P /dev/ttyACM0
 
 # define the CPU variable on the command line to the avr-g++ cpu name to get the default settings for that CPU
 ifndef $(CPU)
@@ -54,11 +55,31 @@ $(PROGRAM_NAME)_$(CPU_GCC).hex: $(Ofiles)
 clean:
 	-rm -f *.o *.hex *.elf programmedDevice_*.time
 
+dumpchip_srec: 
+	avrdude -c $(DEVICE_PROGRAMMER) -p $(CPU_AVRDUDE) -U lfuse:r:lfuse_$(CPU_GCC).hex:i -U hfuse:r:hfuse_$(CPU_GCC).hex:i -U efuse:r:efuse_$(CPU_GCC).hex:i -U eeprom:r:eeprom_$(CPU_GCC).hex:i -U flash:r:flash_$(CPU_GCC).hex:i -U lock:r:lock_$(CPU_GCC).hex:i -U signature:r:sig_$(CPU_GCC).hex:i 
+
+dumpchip: 
+	avrdude -c $(DEVICE_PROGRAMMER) -p $(CPU_AVRDUDE) -U lfuse:r:lfuse_$(CPU_GCC).bin:r -U hfuse:r:hfuse_$(CPU_GCC).bin:r -U eeprom:r:eeprom_$(CPU_GCC).bin:r -U flash:r:flash_$(CPU_GCC).bin:r -U lock:r:lock_$(CPU_GCC).bin:r -U signature:r:sig_$(CPU_GCC).bin:r -U efuse:r:efuse_$(CPU_GCC).bin:r 
+
+check:
+	avrdude -v -c $(DEVICE_PROGRAMMER) -p $(CPU_AVRDUDE)
+
 ifeq ($(CPU),attiny13a)
 
 fuse_8mhz_internal:
-	avrdude -c usbtiny -p t13 -U lfuse:w:0x3a:m
+	avrdude -c $(DEVICE_PROGRAMMER) -p $(CPU_AVRDUDE) -U lfuse:w:0x3a:m
 
+fuse_1mhz_internal:
+	avrdude -c $(DEVICE_PROGRAMMER) -p $(CPU_AVRDUDE) -U lfuse:w:0x2a:m
+
+fuse_slow_clock:
+	avrdude -c $(DEVICE_PROGRAMMER) -p $(CPU_AVRDUDE) -U lfuse:w:0x29:m
+
+endif
+ifeq ($(CPU),atmega48a)
+
+fuse_8mhz_internal:
+	avrdude -c $(DEVICE_PROGRAMMER) -p m48 -U lfuse:w:0xe2:m
 endif
 
 

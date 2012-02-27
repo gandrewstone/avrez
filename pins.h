@@ -17,6 +17,8 @@
 // Or, avr-g++ -mlist-devices --target-help
 #if defined (__AVR_ATtiny24__) || defined (__AVR_ATtiny24A__)  
 
+#define PINOUT_ATtiny24
+
 #define pinA0 PA0,DDRA,PORTA,PINA
 #define pinA1 PA1,DDRA,PORTA,PINA
 #define pinA2 PA2,DDRA,PORTA,PINA
@@ -33,8 +35,10 @@
 
 #elif defined (__AVR_ATtiny13A__)
 
-#define pinB0 PB0,DDRB,PORTB,PINB,0xff
-#define pinB1 PB1,DDRB,PORTB,PINB,0xff
+#define PINOUT_ATtiny13
+
+#define pinB0 PB0,DDRB,PORTB,PINB,invalidPinFunction
+#define pinB1 PB1,DDRB,PORTB,PINB,invalidPinFunction
 #define pinB2 PB2,DDRB,PORTB,PINB,1
 #define pinB3 PB3,DDRB,PORTB,PINB,3
 #define pinB4 PB4,DDRB,PORTB,PINB,2
@@ -49,6 +53,9 @@ enum
 #define AnalogMuxMask (1<<MUX0)|(1<<MUX1)
 
 #elif defined (__AVR_ATmega328P__) || defined (__AVR_ATmega328__) || defined (__AVR_ATmega168__) || defined (__AVR_ATmega168A__) || defined (__AVR_ATmega88__) || defined (__AVR_ATmega88A__) || defined (__AVR_ATmega48__) || defined (__AVR_ATmega48A__) || defined (__AVR_ATmega48P__)
+
+#define PINOUT_ATmega48
+
 #define pinB0 PB0,DDRB,PORTB,PINB,invalidPinFunction
 #define pinB1 PB1,DDRB,PORTB,PINB,invalidPinFunction
 #define pinB2 PB2,DDRB,PORTB,PINB,invalidPinFunction
