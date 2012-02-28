@@ -1,5 +1,5 @@
-#ifndef PINS_H
-#define PINS_H
+#ifndef AVREZ_PINS_H
+#define AVREZ_PINS_H
 
 #ifndef F_CPU
 #warning F_CPU (cpu frequency) is not defined.  Using the chips factory default of 1mhz
@@ -37,12 +37,13 @@
 
 #define PINOUT_ATtiny13
 
-#define pinB0 PB0,DDRB,PORTB,PINB,invalidPinFunction
-#define pinB1 PB1,DDRB,PORTB,PINB,invalidPinFunction
-#define pinB2 PB2,DDRB,PORTB,PINB,1
-#define pinB3 PB3,DDRB,PORTB,PINB,3
-#define pinB4 PB4,DDRB,PORTB,PINB,2
-#define pinB5 PB5,DDRB,PORTB,PINB,0
+
+#define pinB0 0,DDRB,PORTB,PINB,invalidPinFunction
+#define pinB1 1,DDRB,PORTB,PINB,invalidPinFunction
+#define pinB2 2,DDRB,PORTB,PINB,1
+#define pinB3 3,DDRB,PORTB,PINB,3
+#define pinB4 4,DDRB,PORTB,PINB,2
+#define pinB5 5,DDRB,PORTB,PINB,0
 
 enum
 {
