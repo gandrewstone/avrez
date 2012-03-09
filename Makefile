@@ -1,3 +1,4 @@
+# the GNU make program is found at $(ARDUINO_DIR)\hardware\tools\avr\utils\bin
 #
 CPU     ?= attiny13a
 COMPORT ?= COM11
@@ -29,12 +30,27 @@ endif
 ifeq ($(CPU),attiny13a)
 CPU_AVRDUDE := t13
 CPU_GCC     := attiny13a
-F_CPU       := 9600000ULL
+F_CPU       ?= 9600000ULL
 endif
 ifeq ($(CPU),atmega48a)
 CPU_AVRDUDE := m48
 CPU_GCC     := atmega48a
-F_CPU       := 8000000ULL
+F_CPU       ?= 8000000ULL
+endif
+ifeq ($(CPU),atmega48)
+CPU_AVRDUDE := m48
+CPU_GCC     := atmega48
+F_CPU       ?= 8000000ULL
+endif
+ifeq ($(CPU),attiny24)
+CPU_AVRDUDE := t24
+CPU_GCC     := attiny24
+F_CPU       ?= 8000000ULL
+endif
+ifeq ($(CPU),attiny24a)
+CPU_AVRDUDE := t24
+CPU_GCC     := attiny24a
+F_CPU       ?= 8000000ULL
 endif
 
 # FLAGS
