@@ -19,19 +19,27 @@
 
 #define PINOUT_ATtiny24
 
-#define pinA0 PA0,DDRA,PORTA,PINA
-#define pinA1 PA1,DDRA,PORTA,PINA
-#define pinA2 PA2,DDRA,PORTA,PINA
-#define pinA3 PA3,DDRA,PORTA,PINA
-#define pinA4 PA4,DDRA,PORTA,PINA
-#define pinA5 PA5,DDRA,PORTA,PINA
-#define pinA6 PA6,DDRA,PORTA,PINA
-#define pinA7 PA7,DDRA,PORTA,PINA
+#define pinA0 PA0,DDRA,PORTA,PINA,0
+#define pinA1 PA1,DDRA,PORTA,PINA,1
+#define pinA2 PA2,DDRA,PORTA,PINA,2
+#define pinA3 PA3,DDRA,PORTA,PINA,3
+#define pinA4 PA4,DDRA,PORTA,PINA,4
+#define pinA5 PA5,DDRA,PORTA,PINA,5
+#define pinA6 PA6,DDRA,PORTA,PINA,6
+#define pinA7 PA7,DDRA,PORTA,PINA,7
 
-#define pinB0 PB0,DDRB,PORTB,PINB
-#define pinB1 PB1,DDRB,PORTB,PINB
-#define pinB2 PB2,DDRB,PORTB,PINB
-#define pinB3 PB3,DDRB,PORTB,PINB
+#define pinB0 PB0,DDRB,PORTB,PINB,invalidPinFunction
+#define pinB1 PB1,DDRB,PORTB,PINB,invalidPinFunction
+#define pinB2 PB2,DDRB,PORTB,PINB,invalidPinFunction
+#define pinB3 PB3,DDRB,PORTB,PINB,invalidPinFunction
+
+enum
+{
+    AnalogReferenceVin = 0,
+    AnalogReference1_1volt = 2,
+    AnalogReferencePin = 1
+};
+#define AnalogMuxMask (1<<MUX0)|(1<<MUX1)|(1<<MUX2)|(1<<MUX3)
 
 #elif defined (__AVR_ATtiny13A__)
 

@@ -28,6 +28,15 @@
 #define LED_PIN pinB0
 #define ANALOG_PIN pinB3
 #endif
+#ifdef PINOUT_ATtiny24
+#define LED_PIN pinB0
+#define ANALOG_PIN pinA0
+#endif
+
+#ifndef LED_PIN
+#error You did not define pins for me to use!
+#endif
+
 
 void digitalTest()
 {

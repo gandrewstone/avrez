@@ -5,7 +5,7 @@ COMPORT ?= COM11
 VERSION      := 0.1
 PROGRAM_NAME := hello
 
-MSWINDOWS    := 1
+#MSWINDOWS    := 1
 ARDUINO_DIR  := c:\arduino-1.0
 
 # Chip and programmer 
