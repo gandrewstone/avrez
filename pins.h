@@ -13,12 +13,63 @@
 #include <stdint.h>
 #include <util/delay.h>
 
+/* To define a new chip:
+Discover what the compiler calls your chip.  You need 2 names:
+1. The name specified when running avr-g++, for example avr-g++ -mmcu=attiny24
+   run: avr-g++ -mlist-devices --target-help
+2. The name of the chip within C code, for example "__AVR_ATtiny24__"
+   look at: <prefix dir>/avr/include/avr/io.h  On Linux: /usr/lib/avr/include/avr/io.h
+
+Next, check the datasheet to determine whether your chip is exactly the same (programmatically) as a chip that's already been defined.  If that is the case you can easily add your chip name to one of the existing definitions below.
+
+But if your chip is different, in this file you need to create a section for your chip near the bottom of the file.  Just before the  "#else #error" sections.  Do it like this:
+
+[In this description, Things you need to change are bracketed in * since normal parens is valid c]
+
+#elif defined (*C CODE NAME*) || defined (*ANOTHER C CODE NAME*) 
+#else
+
+Inside you need to define the chip as follows.  
+
+#elif defined (*C CODE NAME*) || defined (*ANOTHER C CODE NAME*)
+
+// First pick a name for the chip "family".  This will be the name for ALL chips that are programatically the same as yours.  If nothing is obvious, use the name of the smallest, cheapest variant.
+#define PINOUT_*your canonical name*
+
+// Next define the pins.  Use the following format:
+#define pin*Name from datasheet* *bit index*,*direction register*,*port register*,*pin register*,*analog bit index*
+
+// Normally the "io.h" file (or files it includes) should have defined constants for the values you need.  So it can be as easy as:
+#define pinA0 PA0,DDRA,PORTA,PINA,0
+// And note if your pin does NOT support an analog function, use "invalidPinFunction" as the last item, like this:
+#define pinB0 PB0,DDRB,PORTB,PINB,invalidPinFunction
+
+// Analog Section:  Note if you are not using analogRead() you *could* cheat and just define this to all zeros...
+// Next, look up "analog reference" in the datasheet and make constants for the various references.  These constants allow you to choose the reference voltage for the analogRead function.  Here are all possible values:
+
+enum
+{
+    AnalogReferenceVin = *a number here*,
+    AnalogReference1_1volt = *a number here*,
+    AnalogReferencePin = *a number here*
+};
+
+// Finally, you have to tell the system how many bits are used to select the analog reference voltage as follows.
+#define AnalogMuxMask (1<<MUX0)|(1<<MUX1)|(1<<MUX2)|(1<<MUX3)
+
+// Next, head over to the "Makefile" and add some logic to handle the different CPU= parameters...  you should be able to look at the existing examples to figure that out.
+#else // done!
+
+*/
+
 // See /usr/lib/avr/include/avr/io.h for the symbol defined for your chip
 // Or, avr-g++ -mlist-devices --target-help
 #if defined (__AVR_ATtiny24__) || defined (__AVR_ATtiny24A__)  
 
+// Family name
 #define PINOUT_ATtiny24
 
+//      name  bit dir  port  pin  analog bit
 #define pinA0 PA0,DDRA,PORTA,PINA,0
 #define pinA1 PA1,DDRA,PORTA,PINA,1
 #define pinA2 PA2,DDRA,PORTA,PINA,2
@@ -28,6 +79,7 @@
 #define pinA6 PA6,DDRA,PORTA,PINA,6
 #define pinA7 PA7,DDRA,PORTA,PINA,7
 
+//      name  bit dir  port  pin  analog bit
 #define pinB0 PB0,DDRB,PORTB,PINB,invalidPinFunction
 #define pinB1 PB1,DDRB,PORTB,PINB,invalidPinFunction
 #define pinB2 PB2,DDRB,PORTB,PINB,invalidPinFunction
@@ -39,13 +91,15 @@ enum
     AnalogReference1_1volt = 2,
     AnalogReferencePin = 1
 };
+
 #define AnalogMuxMask (1<<MUX0)|(1<<MUX1)|(1<<MUX2)|(1<<MUX3)
 
 #elif defined (__AVR_ATtiny13A__)
 
+// Family name
 #define PINOUT_ATtiny13
 
-
+//      name  bit dir  port  pin  analog bit
 #define pinB0 0,DDRB,PORTB,PINB,invalidPinFunction
 #define pinB1 1,DDRB,PORTB,PINB,invalidPinFunction
 #define pinB2 2,DDRB,PORTB,PINB,1
@@ -63,8 +117,10 @@ enum
 
 #elif defined (__AVR_ATmega328P__) || defined (__AVR_ATmega328__) || defined (__AVR_ATmega168__) || defined (__AVR_ATmega168A__) || defined (__AVR_ATmega88__) || defined (__AVR_ATmega88A__) || defined (__AVR_ATmega48__) || defined (__AVR_ATmega48A__) || defined (__AVR_ATmega48P__)
 
+// Family name
 #define PINOUT_ATmega48
 
+//      name  bit dir  port  pin  analog bit
 #define pinB0 PB0,DDRB,PORTB,PINB,invalidPinFunction
 #define pinB1 PB1,DDRB,PORTB,PINB,invalidPinFunction
 #define pinB2 PB2,DDRB,PORTB,PINB,invalidPinFunction
@@ -102,6 +158,8 @@ enum
     AnalogReferencePin = 0
 };
 
+// Add a new section here:
+//#elif defined (*NEW CHIP*)
 
 #else
 #error
@@ -112,6 +170,9 @@ enum
 #error Ignore all subsequent errors
 #error -------------------------------------------------------------
 #endif
+
+
+// Defines that are the same for all chips.
 
 enum
 {
@@ -127,7 +188,7 @@ enum
 };
 
     
-
+// Functions that are similar to the Arduino's Wired library:
 
 //#define assignReg(reg,bits,value) do { if (value) asm("sbr %0,%1":"=r" reg:"I" bits:); else asm("cbr %0,%1":"=r" reg:"I" bits:); } while(0)
 #define assignReg(_reg,_bits,_value) do { if (_value) _reg |=_bits; else _reg &=~(_bits); } while(0)
